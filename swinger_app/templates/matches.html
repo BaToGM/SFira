@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Mis matches</h2>
+  {% if matches %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for user in matches %}
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ user.username }}</h5>
+              <p class="card-text small text-muted">{{ user.location or 'Sin ubicación' }}</p>
+              <p class="card-text">{{ user.bio[:100] }}{% if user.bio and user.bio|length > 100 %}...{% endif %}</p>
+              <a href="{{ url_for('profile', user_id=user.id) }}" class="btn btn-outline-primary btn-sm me-2">Ver perfil</a>
+              <a href="{{ url_for('messages', user_id=user.id) }}" class="btn btn-outline-success btn-sm">Chatear</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">Aún no tienes matches. Sigue explorando y dando me gusta.</p>
+  {% endif %}
+{% endblock %}

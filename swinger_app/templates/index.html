@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="text-center py-5">
+    <h1 class="display-4">Bienvenido a SwingerDating</h1>
+    <p class="lead">Una comunidad discreta para parejas y personas que buscan explorar el mundo swinger y conexiones abiertas.</p>
+    <hr class="my-4">
+    <p>Regístrate gratis para empezar a conocer personas afines en tu zona.</p>
+    <a class="btn btn-primary btn-lg me-2" href="{{ url_for('register') }}" role="button">Registrarse</a>
+    <a class="btn btn-secondary btn-lg" href="{{ url_for('login') }}" role="button">Iniciar sesión</a>
+  </div>
+{% endblock %}
