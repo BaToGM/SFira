@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 820" role="img" aria-label="Foto demo editorial de Salma y Rio">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="1" y2="0">
+      <stop offset="0" stop-color="#211a1d"/>
+      <stop offset=".52" stop-color="#ba3650"/>
+      <stop offset="1" stop-color="#fff8f4"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="820" fill="url(#bg)"/>
+  <circle cx="238" cy="286" r="78" fill="#fff8f4" opacity=".82"/>
+  <circle cx="394" cy="282" r="82" fill="#fff8f4" opacity=".78"/>
+  <path d="M84 746c30-174 124-270 258-270 120 0 194 92 214 270z" fill="#181315" opacity=".84"/>
+  <text x="52" y="96" fill="#211a1d" font-family="Inter,Arial" font-size="26" font-weight="900">Salma &amp; Rio</text>
+</svg>

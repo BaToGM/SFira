@@ -1,3 +1,70 @@
-# SFira
+# Swinra
 
-Bootstrap repository base for the Swinra web MVP branch.
+Swinra is a web MVP for an adult social and dating community focused on reputation, matching, community activity and premium discovery widgets.
+
+The first version is intentionally web-first: a modular FastAPI backend, a React dashboard, Docker Compose for local services, and lightweight Kubernetes/observability templates for later deployment work.
+
+## Stack
+
+- Backend: FastAPI, Pydantic, JWT auth, modular routers.
+- Frontend: React, TypeScript, Redux Toolkit, Vite, Recharts.
+- Data services: PostgreSQL and Redis in Docker Compose. The MVP API currently uses a demo in-memory repository so the UI and tests can run before persistence is finalized.
+- CI/CD: GitHub Actions.
+- Infra: Docker, Kubernetes manifests, Prometheus/Grafana starter files.
+
+## Local Development
+
+Copy `.env.example` to `.env` when you want local overrides.
+
+Run with Docker:
+
+```bash
+docker compose up --build
+```
+
+Local URLs:
+
+- Frontend: http://localhost:5173
+- Backend health: http://localhost:8000/health
+- Swagger/OpenAPI: http://localhost:8000/docs
+
+Backend only:
+
+```bash
+cd backend
+python -m venv .venv
+. .venv/Scripts/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+Frontend only:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## Brand Switching
+
+Change `APP_BRAND_NAME` and `VITE_APP_BRAND_NAME` to replace Swinra in public API metadata and frontend branding. Internal package names can remain stable until a full rename is required.
+
+## Tests
+
+```bash
+cd backend && pytest
+cd frontend && npm test
+```
+
+## Deployment
+
+See [docs/deployment.md](docs/deployment.md) for the recommended MVP hosting path: Vercel for frontend, Fly.io for backend, managed PostgreSQL, Upstash Redis and Cloudflare for DNS/CDN/WAF.
+
+## Product Roadmap
+
+See [docs/product-roadmap.md](docs/product-roadmap.md) for the sellable MVP checklist, suggested features and production blockers.
+
+## Business Plan
+
+See [docs/business-plan.md](docs/business-plan.md) for positioning, pricing, go-to-market, maintenance and infrastructure cost estimates.

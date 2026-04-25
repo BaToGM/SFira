@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 820" role="img" aria-label="Foto social demo de Iris">
+  <rect width="640" height="820" fill="#241d20"/>
+  <circle cx="320" cy="302" r="146" fill="#e95d75" opacity=".28"/>
+  <circle cx="320" cy="286" r="92" fill="#fff8f4" opacity=".82"/>
+  <path d="M132 744c24-168 92-258 188-258s164 90 188 258z" fill="#fff8f4" opacity=".22"/>
+  <rect x="72" y="96" width="496" height="52" rx="26" fill="#fff8f4" opacity=".1"/>
+</svg>

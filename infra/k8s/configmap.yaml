@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: swinra-config
+  namespace: swinra
+data:
+  APP_BRAND_NAME: Swinra
+  ENVIRONMENT: production
+  REPUTATION_MIN_SEARCH_SCORE: "3.5"
+  SUPER_SCORE_MULTIPLIER: "1.5"
+  PREMIUM_FEATURES_ENABLED: "true"
+  REDIS_URL: redis://redis:6379/0
+  DATABASE_URL: postgresql+psycopg://swinra:swinra@postgres:5432/swinra

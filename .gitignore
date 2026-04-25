@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+.testdeps/
+
+# Node
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Local env
+.env
+.tools/
+.runtime/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

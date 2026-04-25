@@ -1,0 +1,26 @@
+{
+  "title": "Swinra MVP",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "API health",
+      "targets": [
+        {
+          "expr": "up{job=\"swinra-backend\"}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Request latency placeholder",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "version": 1
+}

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 820" role="img" aria-label="Foto social demo de Luna y Marco">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="1" y2="0">
+      <stop offset="0" stop-color="#241d20"/>
+      <stop offset=".55" stop-color="#bd8b2f"/>
+      <stop offset="1" stop-color="#fff0eb"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="820" fill="url(#bg)"/>
+  <circle cx="312" cy="294" r="140" fill="#fff8f4" opacity=".18"/>
+  <circle cx="247" cy="296" r="72" fill="#fff8f4" opacity=".86"/>
+  <circle cx="374" cy="306" r="70" fill="#fff8f4" opacity=".76"/>
+  <path d="M104 739c38-170 118-252 242-252 118 0 186 88 228 252z" fill="#181315" opacity=".82"/>
+  <path d="M82 602h476v130H82z" fill="#fff8f4" opacity=".08"/>
+</svg>
