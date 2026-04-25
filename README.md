@@ -56,3 +56,7 @@ Change `APP_BRAND_NAME` and `VITE_APP_BRAND_NAME` to replace Swinra in public AP
 cd backend && pytest
 cd frontend && npm test
 ```
+
+## Deployment
+
+See [docs/deployment.md](docs/deployment.md) for the recommended MVP hosting path: Vercel for frontend, Fly.io for backend, managed PostgreSQL, Upstash Redis and Cloudflare for DNS/CDN/WAF.

@@ -31,6 +31,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   background:
@@ -46,10 +50,10 @@ select {
 }
 
 .loading-shell {
+  color: var(--muted);
   display: grid;
   min-height: 100vh;
   place-items: center;
-  color: var(--muted);
 }
 
 .app-shell {
@@ -59,10 +63,13 @@ select {
 }
 
 .topbar,
+.brand-lockup,
 .row-between,
 .panel-title,
 .identity-row,
-.meta-row {
+.meta-row,
+.hero-actions,
+.feature-strip article {
   align-items: center;
   display: flex;
 }
@@ -74,25 +81,68 @@ select {
 }
 
 .topbar {
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 8px;
   gap: 24px;
   margin-bottom: 24px;
+  padding: 12px 14px;
+  position: sticky;
+  top: 12px;
+  z-index: 10;
 }
 
-.topbar h1,
+.brand-lockup,
+.nav-links a,
+.primary-action,
+.secondary-action {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.brand-lockup {
+  gap: 10px;
+  font-weight: 900;
+}
+
+.brand-mark {
+  align-items: center;
+  background: var(--text);
+  border-radius: 8px;
+  color: var(--surface);
+  display: inline-flex;
+  height: 38px;
+  justify-content: center;
+  width: 38px;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nav-links a,
+.secondary-action {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  padding: 10px 12px;
+}
+
+.nav-links a:hover,
+.secondary-action:hover {
+  border-color: color-mix(in srgb, var(--hot) 60%, var(--line));
+}
+
+.home-hero h1,
 .hero-band h2,
 .panel h2,
 .match-card h3,
-.list-item h3 {
+.list-item h3,
+.journey-band h2 {
   margin: 0;
-}
-
-.topbar h1 {
-  font-size: clamp(2rem, 5vw, 4.4rem);
-}
-
-.topbar p {
-  color: var(--muted);
-  max-width: 460px;
 }
 
 .eyebrow {
@@ -102,6 +152,121 @@ select {
   letter-spacing: 0;
   margin: 0 0 6px;
   text-transform: uppercase;
+}
+
+.home-hero {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+  margin-bottom: 18px;
+  min-height: 520px;
+  padding: 46px 0 24px;
+}
+
+.hero-copy {
+  align-self: center;
+}
+
+.home-hero h1 {
+  font-size: clamp(3rem, 10vw, 7rem);
+  line-height: 0.95;
+}
+
+.hero-copy > p {
+  color: var(--muted);
+  font-size: 1.18rem;
+  line-height: 1.7;
+  max-width: 680px;
+}
+
+.hero-actions {
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.primary-action {
+  align-items: center;
+  background: var(--hot);
+  border: 1px solid color-mix(in srgb, var(--hot) 80%, var(--text));
+  border-radius: 999px;
+  color: white;
+  display: inline-flex;
+  font-weight: 900;
+  gap: 8px;
+  padding: 12px 16px;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+}
+
+.primary-action:hover {
+  background: var(--hot-deep);
+  transform: translateY(-2px);
+}
+
+.hero-product {
+  align-content: center;
+  display: grid;
+  gap: 14px;
+}
+
+.product-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.product-card span {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.product-card strong {
+  display: block;
+  font-size: 3.5rem;
+  line-height: 1;
+  margin: 10px 0;
+}
+
+.product-card p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.primary-product-card {
+  background: linear-gradient(135deg, rgba(233, 93, 117, 0.16), rgba(189, 139, 47, 0.16));
+  min-height: 210px;
+}
+
+.feature-strip {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 18px 0;
+}
+
+.feature-strip article {
+  align-items: flex-start;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 160px;
+  padding: 18px;
+}
+
+.feature-strip h2,
+.feature-strip p {
+  margin: 0;
+}
+
+.feature-strip p {
+  color: var(--muted);
+  line-height: 1.55;
 }
 
 .hero-band {
@@ -115,6 +280,7 @@ select {
   justify-content: space-between;
   min-height: 240px;
   padding: 28px;
+  scroll-margin-top: 100px;
 }
 
 .profile-summary {
@@ -197,6 +363,7 @@ select {
 .content-grid {
   grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
   margin-bottom: 18px;
+  scroll-margin-top: 100px;
 }
 
 .panel {
@@ -344,6 +511,7 @@ select {
 .match-card {
   align-items: center;
   display: flex;
+  gap: 14px;
   justify-content: space-between;
 }
 
@@ -353,10 +521,56 @@ select {
   transform: translateY(-2px);
 }
 
+.match-card span,
 .list-item span {
   color: var(--hot-deep);
+  display: block;
   font-size: 0.82rem;
   font-weight: 800;
+}
+
+.match-card span {
+  margin-top: 8px;
+}
+
+.journey-band {
+  background: var(--text);
+  border-radius: 8px;
+  color: var(--surface);
+  margin-top: 18px;
+  padding: 28px;
+}
+
+.journey-band .eyebrow {
+  color: color-mix(in srgb, var(--hot) 70%, white);
+}
+
+.journey-steps {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 18px;
+}
+
+.journey-steps article {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.journey-steps span {
+  color: color-mix(in srgb, var(--hot) 70%, white);
+  font-weight: 900;
+}
+
+.journey-steps h3 {
+  margin: 12px 0 6px;
+}
+
+.journey-steps p {
+  color: color-mix(in srgb, var(--surface) 76%, transparent);
+  line-height: 1.55;
+  margin: 0;
 }
 
 @media (max-width: 900px) {
@@ -369,8 +583,16 @@ select {
 
   .metric-grid,
   .content-grid,
-  .filters {
+  .filters,
+  .home-hero,
+  .feature-strip,
+  .journey-steps {
     grid-template-columns: 1fr;
+  }
+
+  .home-hero {
+    min-height: auto;
+    padding-top: 20px;
   }
 
   .score-orbit {

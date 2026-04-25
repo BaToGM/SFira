@@ -2,14 +2,19 @@ import {
   Bell,
   CalendarDays,
   CheckCircle2,
+  ChevronRight,
   Flame,
   Gift,
+  HeartHandshake,
   MapPin,
   MessageCircle,
+  Radar,
   Search,
   ShieldCheck,
   Sparkles,
+  Star,
   Trophy,
+  Users,
 } from "lucide-react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,14 +49,73 @@ export function App() {
   return (
     <main className="app-shell">
       <header className="topbar">
-        <div>
-          <p className="eyebrow">Web MVP</p>
-          <h1>{brand.name}</h1>
-        </div>
-        <p>{brand.tagline}</p>
+        <a className="brand-lockup" href="#inicio" aria-label="Inicio Swinra">
+          <span className="brand-mark">S</span>
+          <span>{brand.name}</span>
+        </a>
+        <nav className="nav-links" aria-label="Navegacion principal">
+          <a href="#dashboard">Dashboard</a>
+          <a href="#matching">Matching</a>
+          <a href="#comunidad">Comunidad</a>
+          <a href="#premium">Premium</a>
+        </nav>
       </header>
 
-      <section className="hero-band">
+      <section className="home-hero" id="inicio">
+        <div className="hero-copy">
+          <p className="eyebrow">Web MVP para comunidad privada</p>
+          <h1>{brand.name}</h1>
+          <p>{brand.tagline}. Matching, reputacion, eventos y premium en una experiencia lista para presentar.</p>
+          <div className="hero-actions">
+            <a className="primary-action" href="#matching">
+              Explorar perfiles <ChevronRight size={18} />
+            </a>
+            <a className="secondary-action" href="#dashboard">Ver dashboard</a>
+          </div>
+        </div>
+        <div className="hero-product" aria-label="Resumen del producto">
+          <div className="product-card primary-product-card">
+            <span>Scoring Fira</span>
+            <strong>{data.profile.average_score.toFixed(1)}</strong>
+            <p>Reputacion media visible antes de conectar.</p>
+          </div>
+          <div className="product-card">
+            <span>Perfiles filtrados</span>
+            <strong>{filteredMatches.length}</strong>
+            <p>Solo perfiles por encima del umbral configurado.</p>
+          </div>
+          <div className="product-card">
+            <span>Perfil mas visto</span>
+            <strong>{data.mostViewed[0]?.visits ?? 0}</strong>
+            <p>Senal premium para descubrir perfiles con traccion.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="feature-strip" aria-label="Capacidades principales">
+        <article>
+          <ShieldCheck size={22} />
+          <h2>Confianza</h2>
+          <p>Verificacion opcional, badges y niveles de reputacion.</p>
+        </article>
+        <article>
+          <Radar size={22} />
+          <h2>Descubrimiento</h2>
+          <p>Filtros por puntuacion, tipo, ubicacion, intereses y fetiches.</p>
+        </article>
+        <article>
+          <Users size={22} />
+          <h2>Comunidad</h2>
+          <p>Foros, eventos, RSVP y ranking mensual de actividad.</p>
+        </article>
+        <article>
+          <Star size={22} />
+          <h2>Premium</h2>
+          <p>Hotlists, super-puntuaciones, regalos y estadisticas.</p>
+        </article>
+      </section>
+
+      <section className="hero-band" id="dashboard">
         <div className="profile-summary">
           <div className="avatar-mark">{data.profile.display_name.slice(0, 2)}</div>
           <div>
@@ -66,6 +130,9 @@ export function App() {
               </span>
               <span>
                 <Flame size={16} /> {data.profile.reputation_level}
+              </span>
+              <span>
+                <HeartHandshake size={16} /> {data.profile.user_type === "couple" ? "Pareja" : "Soltero"}
               </span>
             </div>
           </div>
@@ -99,7 +166,7 @@ export function App() {
         </article>
       </section>
 
-      <section className="content-grid">
+      <section className="content-grid" id="premium">
         <section className="panel main-panel">
           <div className="panel-title">
             <div>
@@ -125,7 +192,7 @@ export function App() {
           <div className="panel-title">
             <div>
               <p className="eyebrow">Matching</p>
-              <h2>Busqueda avanzada</h2>
+              <h2 id="matching">Busqueda avanzada</h2>
             </div>
             <Search size={22} />
           </div>
@@ -168,7 +235,10 @@ export function App() {
               <article className="match-card" key={profile.id}>
                 <div>
                   <h3>{profile.display_name}</h3>
-                  <p>{profile.location} · {profile.user_type === "couple" ? "Pareja" : "Soltero"}</p>
+                  <p>{profile.headline}</p>
+                  <span>
+                    {profile.location} - {profile.user_type === "couple" ? "Pareja" : "Soltero"}
+                  </span>
                 </div>
                 <strong>{profile.average_score.toFixed(1)}</strong>
               </article>
@@ -176,7 +246,7 @@ export function App() {
           </div>
         </section>
 
-        <section className="panel">
+        <section className="panel" id="comunidad">
           <div className="panel-title">
             <div>
               <p className="eyebrow">Comunidad</p>
@@ -189,7 +259,7 @@ export function App() {
               <article className="list-item" key={post.id}>
                 <span>{post.topic}</span>
                 <h3>{post.title}</h3>
-                <p>{post.points} puntos · {post.replies} respuestas</p>
+                <p>{post.points} puntos - {post.replies} respuestas</p>
               </article>
             ))}
             {data.events.map((event) => (
@@ -203,6 +273,35 @@ export function App() {
             ))}
           </div>
         </section>
+      </section>
+
+      <section className="journey-band">
+        <div>
+          <p className="eyebrow">Flujo de usuario</p>
+          <h2>De registro a encuentro con reputacion</h2>
+        </div>
+        <div className="journey-steps">
+          <article>
+            <span>01</span>
+            <h3>Perfil</h3>
+            <p>Registro como pareja o soltero, intereses, preferencias y barra de completitud.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Matching</h3>
+            <p>Busqueda filtrada por score minimo, orientacion, fetiches, tipo y ubicacion.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Interaccion</h3>
+            <p>Chat, encuentro virtual o presencial con puntuacion posterior.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Reputacion</h3>
+            <p>Badges, ranking, hotlists y analitica premium para perfiles destacados.</p>
+          </article>
+        </div>
       </section>
     </main>
   );
