@@ -64,3 +64,7 @@ See [docs/deployment.md](docs/deployment.md) for the recommended MVP hosting pat
 ## Product Roadmap
 
 See [docs/product-roadmap.md](docs/product-roadmap.md) for the sellable MVP checklist, suggested features and production blockers.
+
+## Business Plan
+
+See [docs/business-plan.md](docs/business-plan.md) for positioning, pricing, go-to-market, maintenance and infrastructure cost estimates.

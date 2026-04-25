@@ -49,6 +49,16 @@ select {
   font: inherit;
 }
 
+button {
+  cursor: pointer;
+}
+
+.button-reset {
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
 .loading-shell {
   color: var(--muted);
   display: grid;
@@ -93,7 +103,7 @@ select {
 }
 
 .brand-lockup,
-.nav-links a,
+.nav-links button,
 .primary-action,
 .secondary-action {
   color: var(--text);
@@ -122,8 +132,9 @@ select {
   gap: 8px;
 }
 
-.nav-links a,
+.nav-links button,
 .secondary-action {
+  background: transparent;
   border: 1px solid var(--line);
   border-radius: 999px;
   font-size: 0.9rem;
@@ -131,9 +142,14 @@ select {
   padding: 10px 12px;
 }
 
-.nav-links a:hover,
+.nav-links button:hover,
+.nav-links button.active,
 .secondary-action:hover {
   border-color: color-mix(in srgb, var(--hot) 60%, var(--line));
+}
+
+.nav-links button.active {
+  background: color-mix(in srgb, var(--hot) 16%, transparent);
 }
 
 .home-hero h1,
@@ -198,6 +214,38 @@ select {
   transition:
     transform 180ms ease,
     background-color 180ms ease;
+}
+
+.secondary-action {
+  display: inline-flex;
+}
+
+.icon-action {
+  align-items: center;
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+  display: inline-flex;
+  font-size: 0.82rem;
+  font-weight: 900;
+  gap: 7px;
+  min-height: 38px;
+  padding: 8px 11px;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease;
+}
+
+.icon-action:hover {
+  border-color: color-mix(in srgb, var(--hot) 60%, var(--line));
+  transform: translateY(-1px);
+}
+
+.inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .primary-action:hover {
@@ -388,12 +436,20 @@ select {
   scroll-margin-top: 100px;
 }
 
+.content-grid.single-view {
+  grid-template-columns: minmax(0, 1.22fr) minmax(320px, 0.78fr);
+}
+
 .panel {
   background: color-mix(in srgb, var(--surface) 94%, transparent);
   border: 1px solid var(--line);
   border-radius: 8px;
   box-shadow: var(--shadow);
   padding: 20px;
+}
+
+.side-panel {
+  align-self: start;
 }
 
 .metric {
@@ -536,6 +592,22 @@ select {
   margin: 10px 0;
 }
 
+.action-feedback,
+.insight-box {
+  background: color-mix(in srgb, var(--mint) 14%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--mint) 28%, var(--line));
+  border-radius: 8px;
+  color: var(--text);
+  line-height: 1.55;
+  margin: 14px 0;
+  padding: 12px;
+}
+
+.insight-box p {
+  color: var(--muted);
+  margin: 6px 0 0;
+}
+
 .premium-locked {
   align-items: center;
   display: flex;
@@ -578,7 +650,9 @@ select {
 }
 
 .filters input,
-.filters select {
+.filters select,
+.auth-form input,
+.inline-composer input {
   accent-color: var(--hot);
   background: var(--surface-strong);
   border: 1px solid var(--line);
@@ -586,6 +660,21 @@ select {
   color: var(--text);
   min-height: 42px;
   padding: 0 10px;
+}
+
+.auth-form,
+.inline-composer {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.auth-form label,
+.inline-composer label {
+  color: var(--muted);
+  display: grid;
+  gap: 8px;
+  font-size: 0.9rem;
 }
 
 .match-list,
@@ -680,6 +769,69 @@ select {
   max-width: 760px;
 }
 
+.pricing-grid,
+.reward-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.pricing-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.price-card,
+.reward-card {
+  display: grid;
+  gap: 12px;
+}
+
+.price-card span,
+.reward-card p,
+.wallet-balance {
+  color: var(--hot-deep);
+  font-weight: 900;
+}
+
+.price-card h2,
+.reward-card h3 {
+  margin: 0;
+}
+
+.price-card p,
+.reward-card p {
+  margin: 0;
+}
+
+.price-card.highlighted {
+  background: linear-gradient(135deg, rgba(233, 93, 117, 0.18), rgba(189, 139, 47, 0.14));
+}
+
+.reward-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
+.reward-card {
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.wallet-balance {
+  align-items: center;
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  display: inline-flex;
+  gap: 7px;
+  padding: 9px 12px;
+}
+
+.compact-table .table-row {
+  grid-template-columns: 1fr 0.5fr;
+}
+
 .journey-band {
   background: var(--text);
   border-radius: 8px;
@@ -730,11 +882,14 @@ select {
 
   .metric-grid,
   .content-grid,
+  .content-grid.single-view,
   .filters,
   .home-hero,
   .feature-strip,
   .profile-showcase,
-  .journey-steps {
+  .journey-steps,
+  .pricing-grid,
+  .reward-grid {
     grid-template-columns: 1fr;
   }
 
