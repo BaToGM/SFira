@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 820" role="img" aria-label="Foto demo editorial de Luna y Marco">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f3b0bd"/>
+      <stop offset="0.52" stop-color="#e95d75"/>
+      <stop offset="1" stop-color="#3d8f7a"/>
+    </linearGradient>
+    <radialGradient id="light" cx="34%" cy="22%" r="72%">
+      <stop offset="0" stop-color="#fff8f4" stop-opacity=".78"/>
+      <stop offset="1" stop-color="#211a1d" stop-opacity=".08"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="820" fill="url(#bg)"/>
+  <rect width="640" height="820" fill="url(#light)"/>
+  <circle cx="245" cy="265" r="86" fill="#fff8f4" opacity=".88"/>
+  <circle cx="388" cy="286" r="78" fill="#fff8f4" opacity=".78"/>
+  <path d="M112 732c30-178 116-280 234-280s192 101 220 280z" fill="#211a1d" opacity=".82"/>
+  <path d="M52 782c46-138 124-212 230-222 110-10 222 52 306 222z" fill="#fff8f4" opacity=".16"/>
+  <rect x="44" y="54" width="198" height="42" rx="21" fill="#fff8f4" opacity=".38"/>
+  <text x="64" y="82" fill="#211a1d" font-family="Inter,Arial" font-size="18" font-weight="800">Album publico</text>
+</svg>

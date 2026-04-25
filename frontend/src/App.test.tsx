@@ -17,6 +17,8 @@ describe("Swinra dashboard", () => {
 
     await waitFor(() => expect(screen.getByRole("heading", { name: "Luna & Marco", level: 2 })).toBeInTheDocument());
     expect(screen.getByText("Perfil completo")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Fotos y album privado", level: 2 })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Resenas verificadas", level: 2 })).toBeInTheDocument();
     expect(screen.getByTestId("matching-filters")).toBeInTheDocument();
     expect(screen.getByTestId("most-viewed-widget")).toBeInTheDocument();
   });

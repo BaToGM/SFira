@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 820" role="img" aria-label="Foto demo editorial de Nexo Duo">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#3d8f7a"/>
+      <stop offset=".48" stop-color="#302429"/>
+      <stop offset="1" stop-color="#bd8b2f"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="820" fill="url(#bg)"/>
+  <circle cx="232" cy="282" r="82" fill="#fff8f4" opacity=".84"/>
+  <circle cx="398" cy="274" r="82" fill="#fff8f4" opacity=".78"/>
+  <path d="M78 752c34-182 130-282 262-282 122 0 198 94 238 282z" fill="#181315" opacity=".78"/>
+  <path d="M32 110h576v68H32z" fill="#fff8f4" opacity=".1"/>
+  <text x="58" y="154" fill="#fff8f4" font-family="Inter,Arial" font-size="25" font-weight="900">Nexo Duo</text>
+</svg>

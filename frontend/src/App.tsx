@@ -1,13 +1,17 @@
 import {
   Bell,
+  Camera,
   CalendarDays,
   CheckCircle2,
   ChevronRight,
+  Eye,
   Flame,
   Gift,
   HeartHandshake,
+  Lock,
   MapPin,
   MessageCircle,
+  MessageSquareQuote,
   Radar,
   Search,
   ShieldCheck,
@@ -26,6 +30,7 @@ import { MostViewedTable } from "./components/MostViewedTable";
 import { ProgressBar } from "./components/ProgressBar";
 import { ReputationChart } from "./components/ReputationChart";
 import { loadDashboard, setFetish, setMinScore, setUserType } from "./features/swinraSlice";
+import type { Profile } from "./features/types";
 
 export function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -45,6 +50,10 @@ export function App() {
     const fetishMatch = !filters.fetish || profile.fetishes.includes(filters.fetish);
     return scoreMatch && typeMatch && fetishMatch;
   });
+  const primaryPhoto = (profile: Profile) => (profile.photos ?? []).find((photo) => photo.is_primary) ?? profile.photos?.[0];
+  const profilePublicPhotos = (data.profile.photos ?? []).filter((photo) => photo.visibility === "public");
+  const privatePhotoCount = (data.profile.photos ?? []).filter((photo) => photo.visibility === "private").length;
+  const featuredReviews = (data.profile.reviews ?? []).slice(0, 2);
 
   return (
     <main className="app-shell">
@@ -117,7 +126,13 @@ export function App() {
 
       <section className="hero-band" id="dashboard">
         <div className="profile-summary">
-          <div className="avatar-mark">{data.profile.display_name.slice(0, 2)}</div>
+          <div className="profile-photo-frame">
+            {primaryPhoto(data.profile) ? (
+              <img src={primaryPhoto(data.profile)?.url} alt={primaryPhoto(data.profile)?.alt} />
+            ) : (
+              <span>{data.profile.display_name.slice(0, 2)}</span>
+            )}
+          </div>
           <div>
             <div className="identity-row">
               <h2>{data.profile.display_name}</h2>
@@ -134,6 +149,9 @@ export function App() {
               <span>
                 <HeartHandshake size={16} /> {data.profile.user_type === "couple" ? "Pareja" : "Soltero"}
               </span>
+              <span>
+                <Camera size={16} /> {profilePublicPhotos.length} fotos publicas
+              </span>
             </div>
           </div>
         </div>
@@ -141,6 +159,54 @@ export function App() {
           <span>{data.profile.average_score.toFixed(1)}</span>
           <small>Scoring Fira</small>
         </div>
+      </section>
+
+      <section className="profile-showcase" aria-label="Perfil con fotos y confianza">
+        <article className="panel photo-gallery-panel">
+          <div className="panel-title">
+            <div>
+              <p className="eyebrow">Perfil visual</p>
+              <h2>Fotos y album privado</h2>
+            </div>
+            <Camera size={22} />
+          </div>
+          <div className="photo-gallery">
+            {profilePublicPhotos.map((photo) => (
+              <img src={photo.url} alt={photo.alt} key={photo.id} />
+            ))}
+            <div className="private-album-tile">
+              <Lock size={22} />
+              <strong>{privatePhotoCount}</strong>
+              <span>privada bajo permiso</span>
+            </div>
+          </div>
+          <p className="privacy-note">
+            Las fotos publicas ayudan a decidir si iniciar conversacion; el album privado queda bajo solicitud y
+            consentimiento.
+          </p>
+        </article>
+
+        <article className="panel review-panel">
+          <div className="panel-title">
+            <div>
+              <p className="eyebrow">Confianza social</p>
+              <h2>Resenas verificadas</h2>
+            </div>
+            <MessageSquareQuote size={22} />
+          </div>
+          <div className="review-list">
+            {featuredReviews.map((review) => (
+              <article className="review-item" key={review.id}>
+                <div className="row-between">
+                  <strong>{review.author}</strong>
+                  <span>{review.score.toFixed(1)}</span>
+                </div>
+                <p>{review.comment}</p>
+                <small>{review.is_verified_interaction ? "Interaccion verificada" : "Pendiente de moderacion"}</small>
+              </article>
+            ))}
+          </div>
+        </article>
       </section>
 
       <section className="metric-grid">
@@ -233,12 +299,23 @@ export function App() {
           <div className="match-list">
             {filteredMatches.map((profile) => (
               <article className="match-card" key={profile.id}>
+                <div className="match-photo">
+                  {primaryPhoto(profile) ? (
+                    <img src={primaryPhoto(profile)?.url} alt={primaryPhoto(profile)?.alt} />
+                  ) : (
+                    <span>{profile.display_name.slice(0, 2)}</span>
+                  )}
+                </div>
                 <div>
                   <h3>{profile.display_name}</h3>
                   <p>{profile.headline}</p>
                   <span>
                     {profile.location} - {profile.user_type === "couple" ? "Pareja" : "Soltero"}
                   </span>
+                  <small>
+                    <Eye size={14} /> {profile.photos?.filter((photo) => photo.visibility === "public").length ?? 0} fotos
+                    visibles
+                  </small>
                 </div>
                 <strong>{profile.average_score.toFixed(1)}</strong>
               </article>
@@ -273,6 +350,18 @@ export function App() {
             ))}
           </div>
         </section>
+      </section>
+
+      <section className="recommendation-band">
+        <div>
+          <p className="eyebrow">Feature recomendada</p>
+          <h2>Circulos de confianza</h2>
+          <p>
+            Una capa para compartir fotos privadas, ubicacion aproximada y disponibilidad solo con usuarios validados o
+            con interacciones previas. Es una funcion premium natural y reduce friccion sin comprometer privacidad.
+          </p>
+        </div>
+        <a className="secondary-action" href="#matching">Ver perfiles compatibles</a>
       </section>
 
       <section className="journey-band">

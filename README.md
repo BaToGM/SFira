@@ -60,3 +60,7 @@ cd frontend && npm test
 ## Deployment
 
 See [docs/deployment.md](docs/deployment.md) for the recommended MVP hosting path: Vercel for frontend, Fly.io for backend, managed PostgreSQL, Upstash Redis and Cloudflare for DNS/CDN/WAF.
+
+## Product Roadmap
+
+See [docs/product-roadmap.md](docs/product-roadmap.md) for the sellable MVP checklist, suggested features and production blockers.

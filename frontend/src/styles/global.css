@@ -289,6 +289,7 @@ select {
   gap: 20px;
 }
 
+.profile-photo-frame,
 .avatar-mark {
   align-items: center;
   background: var(--text);
@@ -301,6 +302,21 @@ select {
   height: 82px;
   justify-content: center;
   text-transform: uppercase;
+}
+
+.profile-photo-frame {
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.profile-photo-frame img,
+.match-photo img,
+.photo-gallery img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 }
 
 .identity-row,
@@ -350,13 +366,19 @@ select {
 }
 
 .metric-grid,
-.content-grid {
+.content-grid,
+.profile-showcase {
   display: grid;
   gap: 18px;
 }
 
 .metric-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 18px 0;
+}
+
+.profile-showcase {
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
   margin: 18px 0;
 }
 
@@ -439,6 +461,81 @@ select {
   background: rgba(189, 139, 47, 0.18);
 }
 
+.photo-gallery {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr 0.86fr;
+  margin-top: 14px;
+}
+
+.photo-gallery img,
+.private-album-tile {
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.private-album-tile {
+  align-items: center;
+  background:
+    linear-gradient(135deg, rgba(33, 26, 29, 0.86), rgba(233, 93, 117, 0.32)),
+    var(--surface-strong);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  padding: 12px;
+  text-align: center;
+}
+
+.private-album-tile strong {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.private-album-tile span,
+.privacy-note,
+.review-item small {
+  color: var(--muted);
+}
+
+.private-album-tile span {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.privacy-note {
+  line-height: 1.55;
+  margin: 14px 0 0;
+}
+
+.review-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.review-item {
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.review-item span {
+  color: var(--hot-deep);
+  font-weight: 900;
+}
+
+.review-item p {
+  color: var(--text);
+  line-height: 1.55;
+  margin: 10px 0;
+}
+
 .premium-locked {
   align-items: center;
   display: flex;
@@ -515,6 +612,25 @@ select {
   justify-content: space-between;
 }
 
+.match-card > div:nth-child(2) {
+  flex: 1;
+}
+
+.match-photo {
+  align-items: center;
+  background: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--surface);
+  display: flex;
+  flex: 0 0 86px;
+  font-weight: 900;
+  height: 104px;
+  justify-content: center;
+  overflow: hidden;
+  text-transform: uppercase;
+}
+
 .match-card:hover,
 .list-item:hover {
   border-color: color-mix(in srgb, var(--hot) 60%, var(--line));
@@ -531,6 +647,37 @@ select {
 
 .match-card span {
   margin-top: 8px;
+}
+
+.match-card small {
+  align-items: center;
+  color: var(--muted);
+  display: inline-flex;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.recommendation-band {
+  align-items: center;
+  background: linear-gradient(135deg, rgba(61, 143, 122, 0.2), rgba(233, 93, 117, 0.14));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding: 24px;
+}
+
+.recommendation-band h2,
+.recommendation-band p {
+  margin: 0;
+}
+
+.recommendation-band p {
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 760px;
 }
 
 .journey-band {
@@ -586,6 +733,7 @@ select {
   .filters,
   .home-hero,
   .feature-strip,
+  .profile-showcase,
   .journey-steps {
     grid-template-columns: 1fr;
   }
@@ -597,6 +745,11 @@ select {
 
   .score-orbit {
     flex-basis: 140px;
+  }
+
+  .recommendation-band {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 
@@ -612,5 +765,20 @@ select {
   .table-row span:nth-child(3),
   .table-row span:nth-child(4) {
     display: none;
+  }
+
+  .photo-gallery {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .match-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .match-photo {
+    flex-basis: auto;
+    height: 220px;
+    width: 100%;
   }
 }

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 820" role="img" aria-label="Foto social demo de Salma y Rio">
+  <rect width="640" height="820" fill="#fff0eb"/>
+  <rect width="640" height="820" fill="#bd8b2f" opacity=".2"/>
+  <circle cx="244" cy="300" r="72" fill="#241d20" opacity=".76"/>
+  <circle cx="392" cy="300" r="72" fill="#241d20" opacity=".68"/>
+  <path d="M94 742c34-170 122-250 246-250 116 0 188 88 204 250z" fill="#241d20" opacity=".8"/>
+  <path d="M54 586h532" stroke="#e95d75" stroke-width="18" opacity=".44"/>
+</svg>

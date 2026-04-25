@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 820" role="img" aria-label="Foto social demo de Nexo Duo">
+  <rect width="640" height="820" fill="#fff8f4"/>
+  <rect width="640" height="820" fill="#3d8f7a" opacity=".28"/>
+  <circle cx="320" cy="305" r="156" fill="#bd8b2f" opacity=".28"/>
+  <circle cx="252" cy="308" r="74" fill="#211a1d" opacity=".76"/>
+  <circle cx="390" cy="312" r="74" fill="#211a1d" opacity=".68"/>
+  <path d="M96 742c40-176 120-256 250-256 118 0 190 88 226 256z" fill="#211a1d" opacity=".82"/>
+</svg>

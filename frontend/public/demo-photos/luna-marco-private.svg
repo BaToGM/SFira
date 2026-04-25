@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 820" role="img" aria-label="Album privado bloqueado de Luna y Marco">
+  <rect width="640" height="820" fill="#241d20"/>
+  <rect width="640" height="820" fill="#e95d75" opacity=".18"/>
+  <circle cx="320" cy="330" r="142" fill="#fff8f4" opacity=".12"/>
+  <rect x="190" y="330" width="260" height="210" rx="28" fill="#fff8f4" opacity=".86"/>
+  <path d="M238 330v-64c0-52 36-92 82-92s82 40 82 92v64h-42v-64c0-29-16-50-40-50s-40 21-40 50v64z" fill="#fff8f4" opacity=".86"/>
+  <circle cx="320" cy="426" r="26" fill="#e95d75"/>
+  <rect x="310" y="448" width="20" height="44" rx="10" fill="#e95d75"/>
+  <text x="205" y="606" fill="#fff8f4" font-family="Inter,Arial" font-size="28" font-weight="900">Album privado</text>
+</svg>

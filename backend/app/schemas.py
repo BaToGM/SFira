@@ -21,6 +21,24 @@ class Badge(BaseModel):
     tone: Literal["soft", "hot", "gold", "elite"] = "soft"
 
 
+class ProfilePhoto(BaseModel):
+    id: str
+    url: str
+    alt: str
+    is_primary: bool
+    visibility: Literal["public", "private"] = "public"
+
+
+class ProfileReview(BaseModel):
+    id: str
+    author: str
+    score: float
+    comment: str = Field(max_length=280)
+    interaction_type: Literal["chat", "virtual", "in_person"]
+    created_at: datetime
+    is_verified_interaction: bool = True
+
+
 class UserCreate(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)
@@ -73,6 +91,8 @@ class ProfilePublic(ProfileUpdate):
     visits: int
     is_verified: bool
     is_premium: bool
+    photos: list[ProfilePhoto]
+    reviews: list[ProfileReview]
 
 
 class RatingCreate(BaseModel):

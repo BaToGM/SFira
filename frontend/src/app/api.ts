@@ -33,6 +33,49 @@ const demoProfile: Profile = {
   visits: 244,
   is_verified: true,
   is_premium: true,
+  photos: [
+    {
+      id: "luna-marco-cover",
+      url: "/demo-photos/luna-marco-cover.svg",
+      alt: "Foto principal de Luna & Marco",
+      is_primary: true,
+      visibility: "public",
+    },
+    {
+      id: "luna-marco-social",
+      url: "/demo-photos/luna-marco-social.svg",
+      alt: "Album social de Luna & Marco",
+      is_primary: false,
+      visibility: "public",
+    },
+    {
+      id: "luna-marco-private",
+      url: "/demo-photos/luna-marco-private.svg",
+      alt: "Album privado de Luna & Marco",
+      is_primary: false,
+      visibility: "private",
+    },
+  ],
+  reviews: [
+    {
+      id: "review-1",
+      author: "Encuentro verificado",
+      score: 5,
+      comment: "Trato respetuoso, comunicacion clara y expectativas bien cuidadas.",
+      interaction_type: "in_person",
+      created_at: new Date(Date.now() - 86400000 * 9).toISOString(),
+      is_verified_interaction: true,
+    },
+    {
+      id: "review-2",
+      author: "Conexion virtual",
+      score: 4.8,
+      comment: "Conversacion fluida y muy buen seguimiento antes de quedar.",
+      interaction_type: "virtual",
+      created_at: new Date(Date.now() - 86400000 * 3).toISOString(),
+      is_verified_interaction: true,
+    },
+  ],
   badges: [
     { code: "explorer", label: "Explorador", tone: "soft" },
     { code: "fira_star", label: "Fira Star", tone: "gold" },
@@ -53,6 +96,22 @@ const demoData: DashboardData = {
       visits: 318,
       interests: ["hotlists", "eventos", "weekends"],
       fetishes: ["lingerie", "wellness"],
+      photos: [
+        {
+          id: "nexo-cover",
+          url: "/demo-photos/nexo-cover.svg",
+          alt: "Foto principal de Nexo Duo",
+          is_primary: true,
+          visibility: "public",
+        },
+        {
+          id: "nexo-social",
+          url: "/demo-photos/nexo-social.svg",
+          alt: "Album social de Nexo Duo",
+          is_primary: false,
+          visibility: "public",
+        },
+      ],
       badges: [{ code: "veteran_swinger", label: "Veterano Swinger", tone: "hot" }],
     },
     {
@@ -66,6 +125,22 @@ const demoData: DashboardData = {
       visits: 138,
       interests: ["foros", "cenas", "virtual"],
       fetishes: ["wellness"],
+      photos: [
+        {
+          id: "iris-cover",
+          url: "/demo-photos/iris-cover.svg",
+          alt: "Foto principal de Iris",
+          is_primary: true,
+          visibility: "public",
+        },
+        {
+          id: "iris-social",
+          url: "/demo-photos/iris-social.svg",
+          alt: "Album social de Iris",
+          is_primary: false,
+          visibility: "public",
+        },
+      ],
       badges: [{ code: "explorer", label: "Explorador", tone: "soft" }],
     },
     {
@@ -78,6 +153,22 @@ const demoData: DashboardData = {
       visits: 201,
       interests: ["eventos", "viajes", "cultura"],
       fetishes: ["roleplay"],
+      photos: [
+        {
+          id: "salma-rio-cover",
+          url: "/demo-photos/salma-rio-cover.svg",
+          alt: "Foto principal de Salma & Rio",
+          is_primary: true,
+          visibility: "public",
+        },
+        {
+          id: "salma-rio-social",
+          url: "/demo-photos/salma-rio-social.svg",
+          alt: "Album social de Salma & Rio",
+          is_primary: false,
+          visibility: "public",
+        },
+      ],
       badges: [{ code: "fira_star", label: "Fira Star", tone: "gold" }],
     },
   ],

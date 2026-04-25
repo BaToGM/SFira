@@ -11,7 +11,9 @@ from app.schemas import (
     EventPublic,
     ForumPost,
     MostViewedCouple,
+    ProfilePhoto,
     ProfilePublic,
+    ProfileReview,
     ProfileUpdate,
     RatingCreate,
     RatingPublic,
@@ -51,6 +53,8 @@ class ProfileRecord:
     age_max: int | None = None
     visits: int = 0
     participation_points: int = 0
+    photos: list[ProfilePhoto] = field(default_factory=list)
+    reviews: list[ProfileReview] = field(default_factory=list)
 
 
 class DemoStore:
@@ -76,11 +80,11 @@ class DemoStore:
         if self.users:
             return
         seeds = [
-            ("luna@example.com", "Luna & Marco", UserType.couple, True, True, 244, 4.9, 24),
-            ("iris@example.com", "Iris", UserType.single, False, True, 138, 4.3, 7),
-            ("nexo@example.com", "Nexo Duo", UserType.couple, True, False, 318, 4.7, 14),
+            ("luna@example.com", "Luna & Marco", UserType.couple, True, True, 244, 4.9, 24, "luna-marco"),
+            ("iris@example.com", "Iris", UserType.single, False, True, 138, 4.3, 7, "iris"),
+            ("nexo@example.com", "Nexo Duo", UserType.couple, True, False, 318, 4.7, 14, "nexo"),
         ]
-        for email, name, user_type, premium, verified, visits, score, count in seeds:
+        for email, name, user_type, premium, verified, visits, score, count, photo_key in seeds:
             user = UserRecord(
                 id=str(uuid4()),
                 email=email,
@@ -105,6 +109,47 @@ class DemoStore:
                 age_max=48,
                 visits=visits,
                 participation_points=42,
+                photos=[
+                    ProfilePhoto(
+                        id=f"{photo_key}-cover",
+                        url=f"/demo-photos/{photo_key}-cover.svg",
+                        alt=f"Foto principal de {name}",
+                        is_primary=True,
+                        visibility="public",
+                    ),
+                    ProfilePhoto(
+                        id=f"{photo_key}-social",
+                        url=f"/demo-photos/{photo_key}-social.svg",
+                        alt=f"Album social de {name}",
+                        is_primary=False,
+                        visibility="public",
+                    ),
+                    ProfilePhoto(
+                        id=f"{photo_key}-private",
+                        url=f"/demo-photos/{photo_key}-private.svg",
+                        alt=f"Album privado de {name}",
+                        is_primary=False,
+                        visibility="private",
+                    ),
+                ],
+                reviews=[
+                    ProfileReview(
+                        id=str(uuid4()),
+                        author="Encuentro verificado",
+                        score=score,
+                        comment="Trato respetuoso, comunicacion clara y expectativas bien cuidadas.",
+                        interaction_type="in_person",
+                        created_at=datetime.now(UTC) - timedelta(days=9),
+                    ),
+                    ProfileReview(
+                        id=str(uuid4()),
+                        author="Conexion virtual",
+                        score=max(4.0, score - 0.2),
+                        comment="Conversacion fluida y muy buen seguimiento antes de quedar.",
+                        interaction_type="virtual",
+                        created_at=datetime.now(UTC) - timedelta(days=3),
+                    ),
+                ],
             )
             self.users[user.id] = user
             self.profiles[profile.id] = profile
@@ -184,6 +229,12 @@ class DemoStore:
             setattr(profile, key, value)
         return self.to_profile_public(profile)
 
+    def profile_reviews(self, profile_id: str) -> list[ProfileReview]:
+        profile = self.profiles.get(profile_id)
+        if not profile:
+            raise ValueError("profile_not_found")
+        return sorted(profile.reviews, key=lambda review: review.created_at, reverse=True)
+
     def to_profile_public(self, profile: ProfileRecord) -> ProfilePublic:
         user = self.users[profile.user_id]
         scores = [rating.score for rating in self.ratings if rating.target_profile_id == profile.id]
@@ -211,6 +262,8 @@ class DemoStore:
             visits=profile.visits,
             is_verified=user.is_verified,
             is_premium=user.is_premium,
+            photos=profile.photos,
+            reviews=profile.reviews,
         )
 
     def add_rating(self, payload: RatingCreate, multiplier: float) -> RatingPublic:
@@ -226,6 +279,18 @@ class DemoStore:
             created_at=datetime.now(UTC),
         )
         self.ratings.append(rating)
+        if payload.comment:
+            target.reviews.append(
+                ProfileReview(
+                    id=str(uuid4()),
+                    author="Interaccion verificada",
+                    score=round(score, 2),
+                    comment=payload.comment,
+                    interaction_type=payload.interaction_type,
+                    created_at=rating.created_at,
+                    is_verified_interaction=True,
+                )
+            )
         return rating
 
     def search_profiles(self, filters: SearchFilters, default_min_score: float) -> list[ProfilePublic]:

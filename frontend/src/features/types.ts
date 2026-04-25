@@ -6,6 +6,24 @@ export type Badge = {
   tone: "soft" | "hot" | "gold" | "elite";
 };
 
+export type ProfilePhoto = {
+  id: string;
+  url: string;
+  alt: string;
+  is_primary: boolean;
+  visibility: "public" | "private";
+};
+
+export type ProfileReview = {
+  id: string;
+  author: string;
+  score: number;
+  comment: string;
+  interaction_type: "chat" | "virtual" | "in_person";
+  created_at: string;
+  is_verified_interaction: boolean;
+};
+
 export type Profile = {
   id: string;
   display_name: string;
@@ -22,6 +40,8 @@ export type Profile = {
   visits: number;
   is_verified: boolean;
   is_premium: boolean;
+  photos: ProfilePhoto[];
+  reviews: ProfileReview[];
 };
 
 export type ReputationPoint = {

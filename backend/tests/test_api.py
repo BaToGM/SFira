@@ -46,6 +46,26 @@ def test_matching_uses_min_score_threshold() -> None:
     assert all(profile["average_score"] >= 4.8 for profile in response.json())
 
 
+def test_verified_rating_comment_appears_as_profile_review() -> None:
+    store.reset()
+    target = client.get("/api/v1/matching/search?min_score=4.8").json()[0]
+    rating = client.post(
+        "/api/v1/reputation/ratings",
+        json={
+            "target_profile_id": target["id"],
+            "interaction_type": "in_person",
+            "score": 5,
+            "comment": "Comunicacion clara y experiencia muy cuidada.",
+        },
+    )
+    assert rating.status_code == 201
+
+    reviews = client.get(f"/api/v1/profiles/{target['id']}/reviews")
+    assert reviews.status_code == 200
+    assert reviews.json()[0]["is_verified_interaction"] is True
+    assert reviews.json()[0]["comment"] == "Comunicacion clara y experiencia muy cuidada."
+
+
 def test_premium_most_viewed_requires_premium() -> None:
     store.reset()
     basic_token = login_demo("iris@example.com")
