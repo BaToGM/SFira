@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swinra-frontend
+  namespace: swinra
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: swinra-frontend
+  template:
+    metadata:
+      labels:
+        app: swinra-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/example/swinra-frontend:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: swinra-frontend
+  namespace: swinra
+spec:
+  type: ClusterIP
+  selector:
+    app: swinra-frontend
+  ports:
+    - port: 80
+      targetPort: 80
