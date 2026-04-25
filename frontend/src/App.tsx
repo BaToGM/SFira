@@ -11,16 +11,17 @@ import {
   Eye,
   Flame,
   Gift,
+  History,
   HeartHandshake,
   Lock,
   LogIn,
   MapPin,
   MessageCircle,
+  MessageSquare,
   MessageSquareQuote,
   Plus,
   Radar,
-  Search,
-  Send,
+  ShieldAlert,
   ShieldCheck,
   Sparkles,
   Star,
@@ -42,6 +43,21 @@ import { loadDashboard, setFetish, setMinScore, setUserType } from "./features/s
 import type { Profile } from "./features/types";
 
 type View = "inicio" | "dashboard" | "matching" | "comunidad" | "premium" | "creditos" | "acceso";
+type ConnectionStage = "idle" | "requested" | "accepted";
+
+type CreditTransaction = {
+  id: string;
+  label: string;
+  amount: number;
+  kind: "earned" | "spent";
+};
+
+type ModerationItem = {
+  id: string;
+  title: string;
+  detail: string;
+  status: "pendiente" | "resuelto";
+};
 
 const validViews: View[] = ["inicio", "dashboard", "matching", "comunidad", "premium", "creditos", "acceso"];
 
@@ -61,6 +77,34 @@ export function App() {
   const [credits, setCredits] = useState(420);
   const [redeemedReward, setRedeemedReward] = useState("");
   const [accessMessage, setAccessMessage] = useState("Sesion demo activa: Luna & Marco");
+  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
+  const [connectionStage, setConnectionStage] = useState<ConnectionStage>("idle");
+  const [connectionMessage, setConnectionMessage] = useState("Selecciona un perfil para iniciar una solicitud segura.");
+  const [checklist, setChecklist] = useState({
+    expectations: true,
+    privacy: false,
+    boundaries: false,
+  });
+  const [creditHistory, setCreditHistory] = useState<CreditTransaction[]>([
+    { id: "earned-profile", label: "Perfil completado", amount: 120, kind: "earned" },
+    { id: "earned-review", label: "Resena verificada recibida", amount: 80, kind: "earned" },
+    { id: "spent-gift", label: "Regalo virtual enviado", amount: -90, kind: "spent" },
+  ]);
+  const [premiumAction, setPremiumAction] = useState("Selecciona una accion premium para ver el efecto en la demo.");
+  const [moderationQueue, setModerationQueue] = useState<ModerationItem[]>([
+    {
+      id: "mod-photo",
+      title: "Foto privada pendiente",
+      detail: "Revision de album antes de aprobar acceso compartido.",
+      status: "pendiente",
+    },
+    {
+      id: "mod-review",
+      title: "Resena reportada",
+      detail: "Validar tono y confirmar que corresponde a una interaccion real.",
+      status: "pendiente",
+    },
+  ]);
   const monthlyPoints = useMemo(
     () => [
       { label: "Perfil completo", points: 120, icon: CheckCircle2 },
@@ -96,6 +140,10 @@ export function App() {
     const fetishMatch = !filters.fetish || profile.fetishes.includes(filters.fetish);
     return scoreMatch && typeMatch && fetishMatch;
   });
+  const selectedProfile =
+    data.matches.find((profile) => profile.id === selectedProfileId) ?? filteredMatches[0] ?? data.profile;
+  const selectedPublicPhotos = (selectedProfile.photos ?? []).filter((photo) => photo.visibility === "public");
+  const selectedPrivatePhotoCount = (selectedProfile.photos ?? []).filter((photo) => photo.visibility === "private").length;
   const rewards = [
     { name: "Regalo virtual privado", cost: 90, icon: Gift },
     { name: "Super-puntuacion", cost: 140, icon: Star },
@@ -108,6 +156,23 @@ export function App() {
   };
 
   const saveSearch = () => setSavedSearches((current) => current + 1);
+  const openProfile = (profile: Profile) => {
+    setSelectedProfileId(profile.id);
+    setConnectionStage("idle");
+    setConnectionMessage("Perfil abierto. Puedes revisar fotos, resenas y solicitar conexion.");
+  };
+  const requestConnection = (profile: Profile) => {
+    setSelectedProfileId(profile.id);
+    setConnectionStage("requested");
+    setConnectionMessage(`Solicitud enviada a ${profile.display_name}. Esperando aceptacion antes de abrir chat.`);
+  };
+  const acceptConnection = () => {
+    setConnectionStage("accepted");
+    setConnectionMessage("Conexion aceptada. Chat y checklist desbloqueados para preparar la interaccion.");
+  };
+  const toggleChecklist = (key: keyof typeof checklist) => {
+    setChecklist((current) => ({ ...current, [key]: !current[key] }));
+  };
   const redeem = (name: string, cost: number) => {
     if (credits < cost) {
       setRedeemedReward("Creditos insuficientes para " + name);
@@ -115,6 +180,25 @@ export function App() {
     }
     setCredits((current) => current - cost);
     setRedeemedReward("Canjeado: " + name);
+    setCreditHistory((current) => [
+      { id: `${name}-${Date.now()}`, label: name, amount: -cost, kind: "spent" },
+      ...current,
+    ]);
+  };
+  const activatePremiumAction = (label: string, creditDelta = 0) => {
+    setPremiumAction(label);
+    if (creditDelta !== 0) {
+      setCredits((current) => current + creditDelta);
+      setCreditHistory((current) => [
+        { id: `${label}-${Date.now()}`, label, amount: creditDelta, kind: creditDelta > 0 ? "earned" : "spent" },
+        ...current,
+      ]);
+    }
+  };
+  const resolveModerationItem = (id: string) => {
+    setModerationQueue((current) =>
+      current.map((item) => (item.id === id ? { ...item, status: "resuelto" } : item)),
+    );
   };
   const submitAccess = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -380,6 +464,14 @@ export function App() {
                       <Eye size={14} /> {profile.photos?.filter((photo) => photo.visibility === "public").length ?? 0}{" "}
                       fotos visibles
                     </small>
+                    <div className="card-actions">
+                      <button className="secondary-action" onClick={() => openProfile(profile)}>
+                        Ver perfil
+                      </button>
+                      <button className="primary-action" onClick={() => requestConnection(profile)}>
+                        Solicitar conexion
+                      </button>
+                    </div>
                   </div>
                   <strong>{profile.average_score.toFixed(1)}</strong>
                 </article>
@@ -387,31 +479,109 @@ export function App() {
             </div>
           </section>
 
-          <section className="panel side-panel">
+          <section className="panel side-panel profile-detail-panel">
             <div className="panel-title">
               <div>
-                <p className="eyebrow">Siguiente accion</p>
-                <h2>Solicitud segura</h2>
+                <p className="eyebrow">Perfil completo</p>
+                <h2>{selectedProfile.display_name}</h2>
               </div>
-              <Send size={22} />
+              <ShieldCheck size={22} />
             </div>
-            <div className="stack-list">
-              <article className="list-item">
-                <span>Paso 1</span>
-                <h3>Solicitar conexion</h3>
-                <p>El otro perfil acepta antes de abrir chat o album privado.</p>
-              </article>
-              <article className="list-item">
-                <span>Paso 2</span>
-                <h3>Checklist de consentimiento</h3>
-                <p>Preferencias, limites, disponibilidad y privacidad antes de quedar.</p>
-              </article>
-              <article className="list-item">
-                <span>Paso 3</span>
-                <h3>Resena posterior</h3>
-                <p>Solo las interacciones confirmadas pueden puntuar y comentar.</p>
-              </article>
+            <div className="detail-photo">
+              {primaryPhoto(selectedProfile) ? (
+                <img src={primaryPhoto(selectedProfile)?.url} alt={primaryPhoto(selectedProfile)?.alt} />
+              ) : (
+                <span>{selectedProfile.display_name.slice(0, 2)}</span>
+              )}
             </div>
+            <p>{selectedProfile.headline}</p>
+            <div className="meta-row detail-meta">
+              <span>
+                <MapPin size={16} /> {selectedProfile.location}
+              </span>
+              <span>
+                <Star size={16} /> {selectedProfile.average_score.toFixed(1)}
+              </span>
+              <span>
+                <Camera size={16} /> {selectedPublicPhotos.length} publicas
+              </span>
+              <span>
+                <Lock size={16} /> {selectedPrivatePhotoCount} privadas
+              </span>
+            </div>
+            <div className="tag-list">
+              {selectedProfile.interests.map((interest) => (
+                <span key={interest}>{interest}</span>
+              ))}
+              {selectedProfile.fetishes.map((fetish) => (
+                <span key={fetish}>{fetish}</span>
+              ))}
+            </div>
+            <div className="review-list compact-review-list">
+              {selectedProfile.reviews.slice(0, 2).map((review) => (
+                <article className="review-item" key={review.id}>
+                  <div className="row-between">
+                    <strong>{review.author}</strong>
+                    <span>{review.score.toFixed(1)}</span>
+                  </div>
+                  <p>{review.comment}</p>
+                </article>
+              ))}
+            </div>
+            <div className="connection-box">
+              <strong>{connectionStage === "accepted" ? "Conexion activa" : "Solicitud segura"}</strong>
+              <p>{connectionMessage}</p>
+              {connectionStage === "idle" && (
+                <button className="primary-action" onClick={() => requestConnection(selectedProfile)}>
+                  Solicitar conexion
+                </button>
+              )}
+              {connectionStage === "requested" && (
+                <button className="secondary-action" onClick={acceptConnection}>
+                  Simular aceptacion
+                </button>
+              )}
+            </div>
+            {connectionStage === "accepted" && (
+              <div className="after-connect">
+                <div className="chat-preview">
+                  <div className="panel-title">
+                    <h3>Chat privado</h3>
+                    <MessageSquare size={18} />
+                  </div>
+                  <p>
+                    <strong>{selectedProfile.display_name}:</strong> Encantados. Antes de quedar preferimos confirmar
+                    expectativas y privacidad.
+                  </p>
+                  <p>
+                    <strong>Luna & Marco:</strong> Perfecto, dejamos checklist y fecha tentativa.
+                  </p>
+                </div>
+                <div className="consent-checklist">
+                  <h3>Checklist previo</h3>
+                  <label>
+                    <input
+                      checked={checklist.expectations}
+                      onChange={() => toggleChecklist("expectations")}
+                      type="checkbox"
+                    />
+                    Expectativas conversadas
+                  </label>
+                  <label>
+                    <input checked={checklist.privacy} onChange={() => toggleChecklist("privacy")} type="checkbox" />
+                    Privacidad y fotos confirmadas
+                  </label>
+                  <label>
+                    <input
+                      checked={checklist.boundaries}
+                      onChange={() => toggleChecklist("boundaries")}
+                      type="checkbox"
+                    />
+                    Limites y preferencias claros
+                  </label>
+                </div>
+              </div>
+            )}
           </section>
         </section>
       )}
@@ -492,6 +662,29 @@ export function App() {
                 <span>710</span>
               </div>
             </div>
+            <div className="moderation-panel">
+              <div className="panel-title">
+                <div>
+                  <p className="eyebrow">Moderacion</p>
+                  <h2>Cola de confianza</h2>
+                </div>
+                <ShieldAlert size={22} />
+              </div>
+              <div className="stack-list">
+                {moderationQueue.map((item) => (
+                  <article className={`list-item moderation-item ${item.status}`} key={item.id}>
+                    <span>{item.status}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.detail}</p>
+                    {item.status === "pendiente" && (
+                      <button className="secondary-action" onClick={() => resolveModerationItem(item.id)}>
+                        Marcar revisado
+                      </button>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </div>
           </section>
         </section>
       )}
@@ -541,6 +734,34 @@ export function App() {
             </section>
           </section>
 
+          <section className="premium-action-grid">
+            <article className="panel premium-action-card">
+              <Crown size={24} />
+              <h3>Destacar perfil 24h</h3>
+              <p>Sube el perfil en busquedas compatibles y hotlists.</p>
+              <button className="primary-action" onClick={() => activatePremiumAction("Boost premium activado", -60)}>
+                Activar por 60 creditos
+              </button>
+            </article>
+            <article className="panel premium-action-card">
+              <Lock size={24} />
+              <h3>Album privado</h3>
+              <p>Solicita acceso temporal y revocable al album privado.</p>
+              <button className="secondary-action" onClick={() => activatePremiumAction("Solicitud de album enviada")}>
+                Solicitar acceso
+              </button>
+            </article>
+            <article className="panel premium-action-card">
+              <BarChart3 size={24} />
+              <h3>Analitica avanzada</h3>
+              <p>Visualizaciones, clicks, guardados y comparativa de perfil.</p>
+              <button className="secondary-action" onClick={() => setShowReport(true)}>
+                Abrir informe
+              </button>
+            </article>
+          </section>
+          <p className="action-feedback">{premiumAction}</p>
+
           <section className="pricing-grid">
             <article className="panel price-card">
               <span>Gratis</span>
@@ -589,6 +810,21 @@ export function App() {
               })}
             </div>
             {redeemedReward && <p className="action-feedback">{redeemedReward}</p>}
+            <div className="ledger-list">
+              <div className="panel-title">
+                <h3>Historial de creditos</h3>
+                <History size={18} />
+              </div>
+              {creditHistory.map((transaction) => (
+                <div className="ledger-row" key={transaction.id}>
+                  <span>{transaction.label}</span>
+                  <strong className={transaction.kind === "earned" ? "positive" : "negative"}>
+                    {transaction.amount > 0 ? "+" : ""}
+                    {transaction.amount}
+                  </strong>
+                </div>
+              ))}
+            </div>
           </section>
 
           <section className="panel side-panel">

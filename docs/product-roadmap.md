@@ -7,6 +7,11 @@ This roadmap defines what turns the current local MVP into a credible demo for f
 - App-style landing, dashboard, matching, community and premium sections.
 - Profile scoring, badges, reputation chart and minimum score filtering.
 - Public profile photos, private album state and verified profile reviews.
+- Full profile detail inside matching with trust signals, photos, interests and reviews.
+- Simulated connection request, accepted-state chat preview and consent checklist.
+- Credits wallet with earn rules, redemption actions and transaction history.
+- Premium actions for boost, private album requests, analytics and hotlists.
+- Community moderation queue for photos/reviews and trust operations.
 - Premium widget for most viewed couples.
 - FastAPI backend with typed endpoints and OpenAPI docs.
 - React/Vite frontend with Redux state and tests.
@@ -22,11 +27,11 @@ This roadmap defines what turns the current local MVP into a credible demo for f
 ## Next Product Features
 
 - Trust Circles: users can share private albums, approximate location and availability only with validated profiles.
-- Consent Checklist: structured pre-meet preferences that both sides can confirm before an event.
-- Profile Moderation Queue: review reports, photo flags and suspicious comments before they affect reputation.
-- Private Album Requests: request, approve, expire or revoke access to private photos.
+- Real connection workflow: request, approve, reject, expire and revoke access.
+- Persistent chat: conversation list, message history and post-chat rating flow.
+- Real credit ledger: immutable transactions, purchase packs and abuse limits.
 - Saved Searches: named searches with alert rules for location, score and interests.
-- Lightweight Chat Prototype: conversation list, message screen and post-chat rating flow.
+- Moderation console: report triage, audit trail, role permissions and SLA status.
 
 ## Production Blockers
 

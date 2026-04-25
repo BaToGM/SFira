@@ -242,6 +242,13 @@ button {
   transform: translateY(-1px);
 }
 
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
 .inline-actions {
   display: flex;
   flex-wrap: wrap;
@@ -360,6 +367,7 @@ button {
 
 .profile-photo-frame img,
 .match-photo img,
+.detail-photo img,
 .photo-gallery img {
   display: block;
   height: 100%;
@@ -450,6 +458,96 @@ button {
 
 .side-panel {
   align-self: start;
+}
+
+.profile-detail-panel > p {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.detail-photo {
+  align-items: center;
+  aspect-ratio: 16 / 10;
+  background: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--surface);
+  display: flex;
+  font-size: 2rem;
+  font-weight: 900;
+  justify-content: center;
+  margin: 14px 0;
+  overflow: hidden;
+}
+
+.detail-meta {
+  margin: 12px 0;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.tag-list span {
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 7px 9px;
+}
+
+.compact-review-list {
+  margin: 12px 0;
+}
+
+.connection-box,
+.chat-preview,
+.consent-checklist,
+.ledger-list,
+.moderation-panel {
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-top: 14px;
+  padding: 14px;
+}
+
+.connection-box p,
+.chat-preview p,
+.consent-checklist label {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.after-connect {
+  display: grid;
+  gap: 12px;
+}
+
+.chat-preview h3,
+.consent-checklist h3,
+.ledger-list h3 {
+  margin: 0;
+}
+
+.consent-checklist {
+  display: grid;
+  gap: 10px;
+}
+
+.consent-checklist label {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.consent-checklist input {
+  accent-color: var(--hot);
 }
 
 .metric {
@@ -770,17 +868,20 @@ button {
 }
 
 .pricing-grid,
-.reward-grid {
+.reward-grid,
+.premium-action-grid {
   display: grid;
   gap: 18px;
 }
 
-.pricing-grid {
+.pricing-grid,
+.premium-action-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .price-card,
-.reward-card {
+.reward-card,
+.premium-action-card {
   display: grid;
   gap: 12px;
 }
@@ -830,6 +931,40 @@ button {
 
 .compact-table .table-row {
   grid-template-columns: 1fr 0.5fr;
+}
+
+.ledger-list {
+  display: grid;
+  gap: 8px;
+}
+
+.ledger-row {
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.ledger-row:last-child {
+  border-bottom: 0;
+}
+
+.ledger-row .positive {
+  color: var(--mint);
+}
+
+.ledger-row .negative {
+  color: var(--hot-deep);
+}
+
+.moderation-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.moderation-item.resuelto {
+  opacity: 0.68;
 }
 
 .journey-band {
@@ -889,7 +1024,8 @@ button {
   .profile-showcase,
   .journey-steps,
   .pricing-grid,
-  .reward-grid {
+  .reward-grid,
+  .premium-action-grid {
     grid-template-columns: 1fr;
   }
 
@@ -929,6 +1065,12 @@ button {
   .match-card {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .card-actions,
+  .card-actions .primary-action,
+  .card-actions .secondary-action {
+    width: 100%;
   }
 
   .match-photo {
